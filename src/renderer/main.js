@@ -8,6 +8,7 @@ import router from './router'
 import store from './store'
 import axios from './others/axios'
 import i18n from './localization/i18n'
+import helpers from './others/helpers'
 
 window.$ = jQuery
 window.jQuery = jQuery
@@ -16,6 +17,7 @@ require('./assets/semantic/dist/semantic')
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
 Vue.http = Vue.prototype.$http = axios
+Vue.prototype.$helpers = helpers
 Vue.prototype.$settings = electronSettings
 Vue.config.productionTip = false
 

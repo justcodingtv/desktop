@@ -20,16 +20,7 @@
 			'navigation': layoutNavigation,
 		},
 		beforeCreate () {
-			if (this.$settings.has('auth.token')) {
-				this.$http.get('/auth/check')
-					.then((response) => {
-
-					}).catch((response) => {
-						this.$settings.set('auth.token', null)
-					})
-			} else {
-				this.$router.push({ name: 'auth.login' })
-			}
+			
 		}
 	}
 </script>

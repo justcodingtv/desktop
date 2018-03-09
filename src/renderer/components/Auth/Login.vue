@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="ui right aligned segment">
-                <button class="ui primary button" v-t="{ path: 'navigation.login' }"/>
+                <button class="ui primary button" v-t="{ path: 'navigation.login' }" @click.prevent="login()" />
             </div>
         </div>
     </div>
@@ -41,7 +41,34 @@
         },
         methods: {
             login () {
+                this.$validator.validateAll().then((isValidated) => {
+                    if (isValidated) {
+                        this.$http.post('/auth/login', {
+                            email: this.email,
+                            password: this.password
+                        }).then((response) => {
+                            const data = response.data
 
+                            /**
+                             * Set the access token in the settings file
+                             */
+                            this.$settings.set('auth.accessToken', data.access_token)
+                            this.$settings.set('auth.tokenType', data.token_type)
+
+                            /**
+                             * Update the user information in Vuex
+                             */
+                            this.$store.commit('userData', data.user)
+
+                            /**
+                             * Add the access token to axios 
+                             */
+                            this.$helpers.addAccessTokenToAxios()
+                        }).catch((response) => {
+
+                        })
+                    }
+                })
             }
         },
         mounted () {
